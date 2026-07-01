@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>evoMagnet -- Signal Intelligence for B2B Introductions</title>
+  <meta name="description" content="evoMagnet finds companies at the exact moment a problem appears and connects them with the firm built to solve it." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ═══════════════════════════════════════
+       RESET
+    ═══════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ═══════════════════════════════════════
+       DESIGN TOKENS
+       Archetype : Editorial Luxury / Dark
+       Dial VARIANCE : 7   MOTION : 4   DENSITY : 3
+       One accent  : #C8A87C (warm bronze)
+       Zero em-dashes
+    ═══════════════════════════════════════ */
+    :root {
+      --bg:       #0B0B0A;
+      --surface:  #141413;
+      --ink:      #EDECE7;
+      --dim:      #888884;
+      --muted:    #525250;
+      --accent:   #C8A87C;
+      --rule:     #1E1E1B;
+      --serif:    "Instrument Serif", Georgia, "Times New Roman", serif;
+      --sans:     "Plus Jakarta Sans", -apple-system, "Helvetica Neue", Arial, sans-serif;
+      --max:      1060px;
+      --pad:      clamp(1.5rem, 5vw, 3.5rem);
+      --ease:     cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* ═══════════════════════════════════════
+       BASE
+    ═══════════════════════════════════════ */
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    /* ═══════════════════════════════════════
+       LAYOUT
+    ═══════════════════════════════════════ */
+    .wrap {
+      width: 100%;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding-left: var(--pad);
+      padding-right: var(--pad);
+    }
+
+    /* ═══════════════════════════════════════
+       SCROLL REVEAL
+    ═══════════════════════════════════════ */
+    .r {
+      opacity: 0;
+      transform: translateY(16px);
+      transition:
+        opacity  700ms var(--ease),
+        transform 700ms var(--ease);
+    }
+
+    .r.in   { opacity: 1; transform: none; }
+    [d="1"] { transition-delay:  90ms; }
+    [d="2"] { transition-delay: 180ms; }
+    [d="3"] { transition-delay: 270ms; }
+    [d="4"] { transition-delay: 360ms; }
+
+    /* ═══════════════════════════════════════
+       NAV
+    ═══════════════════════════════════════ */
+    .nav {
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .nav__row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 1.5rem;
+      padding-bottom: 1.5rem;
+    }
+
+    .nav__brand {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      font-family: var(--sans);
+      font-size: 0.9375rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    /* ── Nav logo ── */
+    .nav__logo {
+      display: block;
+      height: 28px;
+      width: auto;
+      flex-shrink: 0;
+    }
+
+    /* ── Footer logo ── */
+    .footer__logo {
+      display: block;
+      height: 28px;
+      width: auto;
+      flex-shrink: 0;
+    }
+
+    /* Live-signal pulsing dot -- one accent color, on-brand */
+    .dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      animation: blink 2.6s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.2; }
+    }
+
+    .nav__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8125rem;
+      font-weight: 400;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 200ms var(--ease);
+    }
+
+    .nav__link:hover { color: var(--ink); }
+
+    .nav__cta {
+      font-size: 0.8125rem;
+      font-weight: 400;
+      color: var(--dim);
+      text-decoration: underline;
+      text-decoration-color: var(--accent);
+      text-underline-offset: 4px;
+      text-decoration-thickness: 1px;
+      transition: color 200ms var(--ease);
+    }
+
+    .nav__cta:hover { color: var(--ink); }
+
+    /* Dot CTA -- replaces generic button in hero and CTA section */
+    .cta-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      color: var(--ink);
+      text-decoration: none;
+      transition: color 200ms var(--ease);
+    }
+
+    .cta-link:hover { color: var(--dim); }
+
+    /* Larger ripple dot inside CTAs */
+    .cta-link .dot {
+      width: 9px;
+      height: 9px;
+      animation: blink 2.6s ease-in-out infinite, ping 2.6s ease-in-out infinite;
+    }
+
+    @keyframes ping {
+      0%   { box-shadow: 0 0 0 0 rgba(200, 168, 124, 0.55); }
+      60%  { box-shadow: 0 0 0 7px rgba(200, 168, 124, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(200, 168, 124, 0); }
+    }
+
+    /* ═══════════════════════════════════════
+       HERO  --  Asymmetric Editorial Split
+       Headline: full-width, one sentence per line
+       Bottom: sub text | 1px rule | CTA button
+    ═══════════════════════════════════════ */
+    .hero {
+      padding-top: clamp(5rem, 11vw, 8rem);
+      padding-bottom: clamp(5rem, 11vw, 8rem);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    /* Headline spans full container width */
+    .hero__hl {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 3.8vw, 3rem);
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+      margin-bottom: 3.5rem;
+      animation: fadeUp 800ms var(--ease-out) 80ms both;
+    }
+
+    /* Each sentence on its own line */
+    .hero__line {
+      display: block;
+    }
+
+    .hero__hl em {
+      display: block;
+      font-style: italic;
+      color: var(--accent);
+      margin-top: 0.2em;
+    }
+
+    /* Sub + rule + button row below headline */
+    .hero__bottom {
+      display: grid;
+      grid-template-columns: 1fr 1px 280px;
+      column-gap: 4rem;
+      align-items: center;
+      animation: fadeUp 800ms var(--ease-out) 200ms both;
+    }
+
+    /* Vertical rule */
+    .hero__vr {
+      background: var(--rule);
+      align-self: stretch;
+    }
+
+    /* Right column: button only */
+    .hero__aside {
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .hero__sub {
+      font-size: 0.9375rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--dim);
+      text-wrap: balance;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ═══════════════════════════════════════
+       BUTTON
+       Solid accent bg, dark text, minimal radius
+       One accent color used consistently
+    ═══════════════════════════════════════ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      font-family: var(--sans);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: var(--bg);
+      background: var(--accent);
+      text-decoration: none;
+      padding: 0.9rem 2.25rem;
+      border-radius: 3px;
+      white-space: nowrap;
+      transition: opacity 220ms var(--ease);
+    }
+
+    .btn:hover { opacity: 0.72; }
+
+    /* ═══════════════════════════════════════
+       SECTION BASE
+    ═══════════════════════════════════════ */
+    .sec {
+      padding: clamp(6rem, 13vw, 9.5rem) 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    /* ═══════════════════════════════════════
+       EYEBROW  --  max one per three sections
+    ═══════════════════════════════════════ */
+    .eyebrow {
+      display: block;
+      font-size: 0.5625rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 3rem;
+    }
+
+    /* ═══════════════════════════════════════
+       THE GAP  --  editorial split layout
+       Italic lead + two-column tension grid
+    ═══════════════════════════════════════ */
+    .gap__lead {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(1.125rem, 2vw, 1.4375rem);
+      line-height: 1.6;
+      color: var(--dim);
+      max-width: 640px;
+      margin-bottom: 3rem;
+    }
+
+    .gap__cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 4.5rem;
+      position: relative;
+    }
+
+    /* Vertical rule between columns */
+    .gap__cols::before {
+      content: "";
+      position: absolute;
+      inset-block: 0.2em;
+      left: 50%;
+      width: 1px;
+      background: var(--rule);
+    }
+
+    .gap__col p {
+      font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--ink);
+    }
+
+    /* ═══════════════════════════════════════
+       HOW IT WORKS  --  open grid, dividers only
+       No box, no background -- floats on dark bg
+    ═══════════════════════════════════════ */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .step {
+      padding: 0 2rem 0 0;
+      border-right: 1px solid var(--rule);
+    }
+
+    .step:first-child { padding-left: 0; }
+    .step:last-child  { border-right: none; padding-right: 0; }
+    .step:not(:first-child) { padding-left: 2rem; }
+
+    /* Large italic ordinal -- editorial depth, very muted */
+    .step__n {
+      display: block;
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 3.25rem;
+      line-height: 1;
+      color: var(--rule);
+      margin-bottom: 1.75rem;
+      transition: color 260ms var(--ease);
+    }
+
+    .step:hover .step__n { color: var(--muted); }
+
+    .step__label {
+      display: block;
+      font-size: 0.5625rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.875rem;
+    }
+
+    .step__body {
+      font-size: clamp(0.875rem, 1.4vw, 0.9375rem);
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--dim);
+      text-wrap: balance;
+    }
+
+    .step__body strong {
+      color: var(--ink);
+      font-weight: 400;
+    }
+
+    /* ═══════════════════════════════════════
+       CTA  --  Centered italic pull-quote
+    ═══════════════════════════════════════ */
+    .s-cta {
+      text-align: center;
+    }
+
+    .s-cta__quote {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(1.3125rem, 3vw, 2.125rem);
+      font-weight: 400;
+      line-height: 1.5;
+      color: var(--ink);
+      max-width: 660px;
+      margin: 0 auto 3.5rem;
+      text-wrap: balance;
+    }
+
+    /* ═══════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════ */
+    .footer {
+      border-top: 1px solid var(--rule);
+      padding: 2.25rem 0 2rem;
+    }
+
+    .footer__row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .footer__brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+    }
+
+    .footer__email {
+      font-size: 0.8125rem;
+      font-weight: 400;
+      color: var(--dim);
+      text-decoration: underline;
+      text-decoration-color: var(--accent);
+      text-underline-offset: 3px;
+      text-align: center;
+      transition: color 180ms var(--ease);
+    }
+
+    .footer__email:hover { color: var(--ink); }
+
+    .footer__copy {
+      font-size: 0.75rem;
+      font-weight: 300;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    /* ═══════════════════════════════════════
+       RESPONSIVE  --  mobile-first collapse
+       Aggressive single-column below 768px
+    ═══════════════════════════════════════ */
+    @media (max-width: 768px) {
+      .hero__bottom {
+        grid-template-columns: 1fr;
+        row-gap: 2rem;
+      }
+
+      .hero__vr { display: none; }
+
+      .gap__cols {
+        grid-template-columns: 1fr;
+        gap: 1.5rem 0;
+      }
+
+      .gap__cols::before { display: none; }
+
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .step {
+        padding: 2rem 0 !important;
+        border-right: none;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .step:last-child { border-bottom: none; }
+    }
+
+    @media (max-width: 480px) {
+      .footer__row {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
+      }
+
+      .footer__email {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        text-align: left;
+        margin-top: 0.875rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="nav">
+    <div class="wrap nav__row">
+      <span class="nav__brand">
+        <img src="logo.svg" alt="" class="nav__logo" aria-hidden="true" />
+        evoMagnet
+      </span>
+      <a href="https://cal.com/abdullahevomagnet/intro-feasibility-call" target="_blank" rel="noopener noreferrer" class="nav__cta">Request access</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="wrap">
+        <h1 class="hero__hl">
+          <span class="hero__line">Companies look for help too late.</span>
+          <span class="hero__line">The right firms never hear about it.</span>
+          <em>We fix the gap.</em>
+        </h1>
+        <div class="hero__bottom">
+          <p class="hero__sub">evoMagnet finds companies at the exact moment a problem appears &mdash; and connects them with the firm built to solve it.</p>
+          <div class="hero__vr" aria-hidden="true"></div>
+          <div class="hero__aside">
+            <a href="https://cal.com/abdullahevomagnet/intro-feasibility-call" target="_blank" rel="noopener noreferrer" class="cta-link">
+              <span class="dot" aria-hidden="true"></span>Let's talk
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- THE GAP -->
+    <section class="sec">
+      <div class="wrap">
+        <p class="gap__lead r">Most B2B introductions happen through cold outreach, referrals, or luck.</p>
+        <div class="gap__cols">
+          <div class="gap__col r" d="1">
+            <p>By the time a firm hears about an opportunity, the timing is off, the fit is wrong, or someone else got there first.</p>
+          </div>
+          <div class="gap__col r" d="2">
+            <p>We don't wait for that. We track the signal &mdash; the moment a company hits a problem &mdash; and route the introduction before anyone else sees it.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="sec">
+      <div class="wrap">
+        <span class="eyebrow r">How it works</span>
+        <div class="steps r" d="1">
+
+          <div class="step">
+            <span class="step__n">01</span>
+            <span class="step__label">Signal</span>
+            <p class="step__body">We monitor real-time data to catch companies the moment a problem surfaces. Not job titles. Not company size. <strong>The actual trigger.</strong></p>
+          </div>
+
+          <div class="step">
+            <span class="step__n">02</span>
+            <span class="step__label">Fit</span>
+            <p class="step__body">We check both sides before anything moves. Does the company have urgency? Does the firm have capacity? <strong>No fit, no intro.</strong></p>
+          </div>
+
+          <div class="step">
+            <span class="step__n">03</span>
+            <span class="step__label">Intro</span>
+            <p class="step__body">One warm introduction between two sides that <strong>already make sense together.</strong></p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="sec s-cta">
+      <div class="wrap">
+        <p class="s-cta__quote r">If your firm solves a real problem and you want to be in the room the moment that problem shows up &mdash; not three months later through a referral &mdash; we should talk.</p>
+        <a href="https://cal.com/abdullahevomagnet/intro-feasibility-call" target="_blank" rel="noopener noreferrer" class="cta-link r" d="1">
+          <span class="dot" aria-hidden="true"></span>Let's talk
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap footer__row">
+      <span class="footer__brand">
+        <img src="logo.svg" alt="" class="footer__logo" aria-hidden="true" />
+        evoMagnet
+      </span>
+      <a href="mailto:abdullah@evomagnet.com" class="footer__email">abdullah@evomagnet.com</a>
+      <span class="footer__copy">&#169;&thinsp;2025</span>
+    </div>
+  </footer>
+
+  <script>
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.07, rootMargin: '0px 0px -28px 0px' });
+
+    document.querySelectorAll('.r').forEach(el => io.observe(el));
+  </script>
+
+</body>
+</html>
