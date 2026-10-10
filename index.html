@@ -615,7 +615,7 @@
         evoMagnet
       </span>
       <a href="mailto:abdullah@evomagnet.com" class="footer__email">abdullah@evomagnet.com</a>
-      <span class="footer__copy">&#169;&thinsp;2025</span>
+      <span class="footer__copy">&#169;&thinsp;<span id="year">2026</span></span>
     </div>
   </footer>
 
@@ -627,6 +627,8 @@
     }, { threshold: 0.07, rootMargin: '0px 0px -28px 0px' });
 
     document.querySelectorAll('.r').forEach(el => io.observe(el));
+
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 
 </body>
